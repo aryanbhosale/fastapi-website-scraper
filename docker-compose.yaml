@@ -1,0 +1,10 @@
+services:
+  fastapi-scraper:
+    container_name: fastapi_scraper
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+
