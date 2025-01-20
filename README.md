@@ -27,7 +27,7 @@ This repository provides a **FastAPI** application that scrapes the homepage of 
 2. **Company Size**: The company’s size (small, medium, large, or numeric data)
 3. **Location**: The company’s location
 
-All results are exposed via a simple POST endpoint (`/scrape`) secured with a **Bearer token**.
+All results are exposed via a simple POST endpoint (`/scrape`) secured with a **Bearer token**. In this hobby project, the bearer token is literally **`YOUR_SECRET_KEY`**.
 
 ---
 
@@ -42,9 +42,9 @@ All results are exposed via a simple POST endpoint (`/scrape`) secured with a **
 ---
 
 ## Prerequisites
-- **Python** 3.9 or higher
-- **pip** (Python package manager)
-- (Optional) **Docker** if you wish to run the application in a container
+- **Python** 3.9 or higher  
+- **pip** (Python package manager)  
+- (Optional) **Docker** if you wish to run the application in a container  
 
 ---
 
@@ -88,11 +88,12 @@ The key dependencies include:
 Create a file called `.env` in the project root (same directory as `requirements.txt`, `Dockerfile`, etc.) with the following contents:
 
 ```
-SECRET_KEY="your_secret_key"
+SECRET_KEY="YOUR_SECRET_KEY"
 GEMINI_API_KEY="your_gemini_api_key"
 ```
 
-- **SECRET_KEY**: A secret token your API will use to authenticate incoming requests.  
+- **SECRET_KEY**: The bearer token used to authenticate incoming requests.  
+  - For this project, it’s explicitly set to **`YOUR_SECRET_KEY`**.  
 - **GEMINI_API_KEY**: The API key obtained from [Google AI Studio](https://aistudio.google.com/apikey/) or whichever source provided the Gemini credentials.
 
 ### 5. Run the application
@@ -123,8 +124,8 @@ To confirm everything is working correctly:
    ```
 3. **Headers**:
    - `Content-Type: application/json`
-   - `Authorization: Bearer your_secret_key`
-     - Replace `your_secret_key` with whatever you defined in your `.env` file.
+   - `Authorization: Bearer YOUR_SECRET_KEY`
+     *(Using the literal string `YOUR_SECRET_KEY` as the token.)*
 4. **Body** (JSON):
    ```json
    {
@@ -143,11 +144,7 @@ You should receive a JSON response like:
 }
 ```
 
-If you receive a `401 Unauthorized`, ensure your **Authorization** header is correct.
-
----
-
-Below is an **updated** `README.md` **Docker setup** section that walks through using Docker **Compose** rather than standalone Docker commands. It includes sample `docker-compose.yml` content, building/running instructions, and how to set environment variables.
+If you receive a `401 Unauthorized`, ensure your **Authorization** header is correct (`Bearer YOUR_SECRET_KEY`).
 
 ---
 
@@ -173,18 +170,17 @@ services:
 - **ports**: `8000:8000` maps container port 8000 → host port 8000.
 - **environment**:
   - References environment variables **SECRET_KEY** and **GEMINI_API_KEY** via `${SECRET_KEY}` and `${GEMINI_API_KEY}`.
-  - You can provide these values in a `.env` file or pass them in from the CLI.
 
 ### 2. (Optional) Create a `.env` file
 
 If you want to store secrets locally without editing the YAML, create a file called **`.env`** in the same directory (this file is automatically recognized by Docker Compose):
 
 ```
-SECRET_KEY=your_secret_key
+SECRET_KEY=YOUR_SECRET_KEY
 GEMINI_API_KEY=your_gemini_api_key
 ```
 
-*(Make sure you don’t commit real secrets to a public repo!)*
+*(Again, we’re literally using `YOUR_SECRET_KEY` as the token for this project.)*
 
 ### 3. Build the image
 
@@ -218,9 +214,9 @@ docker compose ps
 
 You should see something like:
 
-| NAME               | COMMAND                    | STATE | PORTS        |
-|--------------------|----------------------------|-------|------------- |
-| fastapi_scraper    | "uvicorn app.main:app …"  | Up    | 0.0.0.0:8000→8000/tcp |
+| NAME               | COMMAND                    | STATE | PORTS                 |
+|--------------------|----------------------------|-------|-----------------------|
+| fastapi_scraper    | "uvicorn app.main:app …"  | Up    | 0.0.0.0:8000->8000/tcp|
 
 ### 6. Check logs (if needed)
 
@@ -237,7 +233,7 @@ Open Postman or your browser:
 - **URL**: `http://localhost:8000/scrape`
 - **Method**: `POST`
 - **Headers**:
-  - `Authorization: Bearer your_secret_key`
+  - `Authorization: Bearer YOUR_SECRET_KEY`
   - `Content-Type: application/json`
 - **Body** (raw JSON):
   ```json
@@ -257,7 +253,7 @@ If everything is configured correctly, you’ll receive JSON with keys `industry
 
 **Request**:
 - **Headers**:
-  - `Authorization: Bearer <SECRET_KEY>`
+  - `Authorization: Bearer YOUR_SECRET_KEY`
   - `Content-Type: application/json`
 - **Body**:
   ```json
@@ -280,10 +276,10 @@ If everything is configured correctly, you’ll receive JSON with keys `industry
 ## Deployment Notes
 
 - You can deploy this application on any container-based platform (e.g. [Render](https://render.com/), [Railway](https://railway.app/), [Fly.io](https://fly.io/), Heroku, etc.).
-- Make sure to set `SECRET_KEY` and `GEMINI_API_KEY` as environment variables in your hosting platform’s configuration.
+- Make sure to set `SECRET_KEY` and `GEMINI_API_KEY` as environment variables in your hosting platform’s configuration (e.g., `SECRET_KEY=YOUR_SECRET_KEY`).
 - For Render or Railway, the steps are typically:
   1. **Connect** your GitHub repository.
-  2. **Set environment variables** (SECRET_KEY, GEMINI_API_KEY).
+  2. **Set environment variables** (e.g., `SECRET_KEY=YOUR_SECRET_KEY`, `GEMINI_API_KEY=your_gemini_api_key`).
   3. **Build & Deploy** using `pip install -r requirements.txt` and something like:
      ```bash
      uvicorn app.main:app --host 0.0.0.0 --port 10000
