@@ -1,5 +1,8 @@
 # FastAPI AI Scraper
 
+![image](https://github.com/user-attachments/assets/d2cacd53-3d03-46ae-9e26-5b543649f009)
+
+
 **Table of Contents**
 1. [Introduction](#introduction)
 2. [Features](#features)
