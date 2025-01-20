@@ -273,18 +273,3 @@ If everything is configured correctly, you’ll receive JSON with keys `industry
   "location": "California, USA"
 }
 ```
-
----
-
-## Deployment Notes
-
-- You can deploy this application on any container-based platform (e.g. [Render](https://render.com/), [Railway](https://railway.app/), [Fly.io](https://fly.io/), Heroku, etc.).
-- Make sure to set `SECRET_KEY` and `GEMINI_API_KEY` as environment variables in your hosting platform’s configuration (e.g., `SECRET_KEY=YOUR_SECRET_KEY`).
-- For Render or Railway, the steps are typically:
-  1. **Connect** your GitHub repository.
-  2. **Set environment variables** (e.g., `SECRET_KEY=YOUR_SECRET_KEY`, `GEMINI_API_KEY=your_gemini_api_key`).
-  3. **Build & Deploy** using `pip install -r requirements.txt` and something like:
-     ```bash
-     uvicorn app.main:app --host 0.0.0.0 --port 10000
-     ```
-     (Port might vary depending on the platform’s default.)
